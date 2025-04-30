@@ -15,11 +15,21 @@ return [
     |
     */
 
-    'paths' => ['*'],
+    //'paths' => ['*'],
+    'paths' => ['api/*'],
+
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')],
+    //'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:8101')],
+    'allowed_origins' => [
+        'http://localhost',
+        'http://localhost:8102',
+        'http://localhost:8100',
+        'https://localhost',
+        'https://apiprojectmoviliitest-production.up.railway.app', // agrega el correcto
+    ],
+
 
     'allowed_origins_patterns' => [],
 

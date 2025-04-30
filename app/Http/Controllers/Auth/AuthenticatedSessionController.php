@@ -21,18 +21,41 @@ class AuthenticatedSessionController extends Controller
 
     //     return response()->noContent();
     // }
-    public function store(LoginRequest $request)
+
+
+    // public function store(LoginRequest $request)
+    // {
+    //     $request->authenticate();
+
+    //     // $request->session()->regenerate();
+
+    //     $user = Auth::user();
+    //     $token = $user->createToken('api-token')->plainTextToken;
+
+    //     return response()->json([
+    //         'user' => $user,
+    //         'token' => $token
+    //     ]);
+    // }
+
+    public function store(Request $request)
     {
-        $request->authenticate();
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-        // $request->session()->regenerate();
+        $user = \App\Models\User::where('email', $request->email)->first();
 
-        $user = Auth::user();
-        $token = $user->createToken('api-token')->plainTextToken;
+        if (!$user || !\Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Credenciales incorrectas'], 401);
+        }
+
+        $token = $user->createToken('mobile-token')->plainTextToken;
 
         return response()->json([
+            'token' => $token,
             'user' => $user,
-            'token' => $token
         ]);
     }
 
